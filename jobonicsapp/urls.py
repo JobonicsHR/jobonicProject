@@ -12,8 +12,8 @@ urlpatterns = [
     url(r'^professions/$', views.ProfessionList.as_view()),
     url(r'^jobtypes/$', views.JobTypeList.as_view()),
     url(r'^countries/$', views.CountryList.as_view()),
-    url(r'^entity_sizes/$', views.EntitySizeList.as_view()),
-    url(r'^app_stages/$', views.ApplicationStageList.as_view()),
+    url(r'^entity-sizes/$', views.EntitySizeList.as_view()),
+    url(r'^app-stages/$', views.ApplicationStageList.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

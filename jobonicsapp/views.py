@@ -9,7 +9,22 @@ from django.http import HttpResponse
 # Create your views here.
 
 def index(request):
-    return HttpResponse("Api  Page")
+    content = '''
+
+    <b>jobonicsapp</b><br />
+    <a href="industries">/industries/</a><br />
+    /industries/[int]<br />
+    <a href="users">/users/</a><br />
+    /users/[int]<br />
+    <a href="professions">/professions/</a><br />
+    <a href="jobtypes">/jobtypes/</a><br />
+    <a href="countries">/countries/</a><br />
+    <a href="entity-sizes">/entity-sizes/</a><br />
+    <a href="app-stages">/app-stages/</a><br />
+    <hr />
+    
+    '''
+    return HttpResponse(content)
 
 
 class IndustryList(generics.ListCreateAPIView):
