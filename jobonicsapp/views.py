@@ -3,7 +3,13 @@ from .serializers import IndustrySerializer, ProfessionSerializer, JobStatusSeri
 from rest_framework import generics, permissions
 from jobonicusers.models import JobonicUser as User
 
+# this is just for the holder
+from django.http import HttpResponse
+
 # Create your views here.
+
+def index(request):
+    return HttpResponse("Api  Page")
 
 
 class IndustryList(generics.ListCreateAPIView):
