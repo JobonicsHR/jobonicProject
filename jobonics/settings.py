@@ -100,7 +100,7 @@ WSGI_APPLICATION = 'jobonics.wsgi.application'
 DATABASES = {
     'default' : {
         'ENGINE' : 'django.db.backends.postgresql',
-        'NAME' : 'd4ofkj940dt9nu',
+        'NAME' : 'd4ofkj940dt9nu ',
         'USER' : 'nsiukaoqybsjna',
         'PASSWORD' : '6e9755b3a6dfe9c0aed06de8f41bc7aad7d73c4a964d67b550c4882d2ea8da93',
         'HOST' : 'ec2-23-21-246-11.compute-1.amazonaws.com',
