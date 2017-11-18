@@ -22,6 +22,7 @@ def index(request):
     <a href="entity-sizes">/entity-sizes/</a><br />
     <a href="app-stages">/app-stages/</a><br />
     <hr />
+    <b>jobonicsuser</b><br />
     
     '''
     return HttpResponse(content)
