@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '57pj9fuq#b@-60bd#k^^+!-zp2233+5v-1kp*
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DEBUG', 0))
+DEBUG = bool(os.environ.get('DEBUG', 1))
 
 ALLOWED_HOSTS = ['*']
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'jobonicUsers.apps.JobonicusersConfig',
     'corsheaders',
 ]
 
@@ -93,8 +94,19 @@ WSGI_APPLICATION = 'jobonics.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': dj_database_url.config()
+# }
+
 DATABASES = {
-    'default': dj_database_url.config()
+    'default' : {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'jobonics',
+        'USER': 'jobonics',
+        'PASSWORD': 'jobonics',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 
