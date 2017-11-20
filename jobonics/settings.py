@@ -94,20 +94,20 @@ WSGI_APPLICATION = 'jobonics.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-# DATABASES = {
-#     'default': dj_database_url.config()
-# }
-
 DATABASES = {
-    'default' : {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'jobonics',
-        'USER': 'jobonics',
-        'PASSWORD': 'jobonics',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': "postgres://nsiukaoqybsjna:6e9755b3a6dfe9c0aed06de8f41bc7aad7d73c4a964d67b550c4882d2ea8da93@ec2-23-21-246-11.compute-1.amazonaws.com:5432/d4ofkj940dt9nu"
 }
+
+# DATABASES = {
+#     'default' : {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'jobonics',
+#         'USER': 'jobonics',
+#         'PASSWORD': 'jobonics',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
