@@ -2,8 +2,9 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from jobonicUsers.models import User
-from jobonicUsers.serializers import UserSerializer
+
+from jobonicUsers.models import User, LoginSession
+from jobonicUsers.serializers import UserSerializer, LoginSessionSerializer
 
 from blocks import auth, moments
 
@@ -21,7 +22,7 @@ def user_list(request):
     elif request.method == 'POST':
         data = JSONParser().parse(request)
         data['salt'] = auth.generate_str(32)
-        data['password'] = auth.hash_password(data['password'], data['salt'])
+        data['password'] = auth.hash_password(data['salt'], data['password'])
         data['created'] = moments.now()
         serializer = UserSerializer(data=data)
         
@@ -60,16 +61,21 @@ def user_details(request, pk):
 			
 
 @csrf_exempt
-def user_login(request, user_name, password):
-    try:
-        user = User.objects.get(user_name=user_name)
-    except User.DoesNotExist:
-        return HttpResponse(status=400)
-
+def user_login(request):
     if request.method == 'POST':
-        stored_pass = User.password
-        stored_salt = User.salt
-
-        if unhash_password(stored_salt, password, stored_pass):
-            return JsonResponse({"status" : "success"}, status=200)
+        data = JSONParser().parse(request)
+        try:
+            user = User.objects.get(user_name=data['user_name'])
+        except User.DoesNotExist:
+            return HttpResponse(status=400)
         
+        stored_pass = user.password
+        stored_salt = user.salt
+        
+        unhash = auth.unhash_password(stored_salt, data['password'], stored_pass)
+        if unhash:
+            new_session = LoginSession(user_id = user, created = moments.now(), expire = moments.now() + 3600)
+            sess = LoginSessionSerializer(new_session)
+            return JsonResponse(sess.data, safe=False)
+        else:
+            return JsonResponse(false)
