@@ -94,8 +94,19 @@ WSGI_APPLICATION = 'jobonics.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': "postgres://nsiukaoqybsjna:6e9755b3a6dfe9c0aed06de8f41bc7aad7d73c4a964d67b550c4882d2ea8da93@ec2-23-21-246-11.compute-1.amazonaws.com:5432/d4ofkj940dt9nu"
+# }
+
 DATABASES = {
-    'default': "postgres://nsiukaoqybsjna:6e9755b3a6dfe9c0aed06de8f41bc7aad7d73c4a964d67b550c4882d2ea8da93@ec2-23-21-246-11.compute-1.amazonaws.com:5432/d4ofkj940dt9nu"
+    'default' : {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd4ofkj940dt9nu',
+        'USER': 'nsiukaoqybsjna',
+        'PASSWORD': '6e9755b3a6dfe9c0aed06de8f41bc7aad7d73c4a964d67b550c4882d2ea8da93',
+        'HOST': 'ec2-23-21-246-11.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
 }
 
 # DATABASES = {
