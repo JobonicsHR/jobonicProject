@@ -22,7 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', '')
+SECRET_KEY = os.environ.get('SECRET_KEY', '57pj9fuq#b@-60bd#k^^+!-zp2233+5v-1kp*z725pc%1mx-w-')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', 0))
@@ -41,14 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'jobonicEntity',
-    'jobonicsapp',
-    'jobonicusers',
-    'jobonicjob',
     'corsheaders',
 ]
 
-AUTH_USER_MODEL = 'jobonicusers.JobonicUser'
+# AUTH_USER_MODEL = 'jobonicusers.JobonicUser'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
