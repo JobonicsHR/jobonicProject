@@ -65,7 +65,7 @@ def user_login(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
         try:
-            user = User.objects.get(user_name=data['user_name'])
+            user = User.objects.get(email_address=data['email_address'])
         except User.DoesNotExist:
             return HttpResponse(status=400)
         
@@ -78,4 +78,4 @@ def user_login(request):
             sess = LoginSessionSerializer(new_session)
             return JsonResponse(sess.data, safe=False)
         else:
-            return JsonResponse(false)
+            return JsonResponse({"msg" : "Unsuccessfully"})

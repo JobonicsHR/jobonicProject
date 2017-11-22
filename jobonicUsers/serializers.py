@@ -5,7 +5,7 @@ from jobonicUsers.models import User, UserProfile, LoginSession
 class UserSerializer (serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'middle_name', 'last_name', 'user_name', 'salt', 'password', 'created', 'active', 'organisation')
+        fields = ('id', 'first_name', 'middle_name', 'last_name', 'email_address', 'user_name', 'salt', 'password', 'created', 'active', 'organisation')
 
 class LoginSessionSerializer (serializers.ModelSerializer):
     class Meta:
