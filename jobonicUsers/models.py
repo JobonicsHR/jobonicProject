@@ -18,7 +18,8 @@ class User(models.Model):
     date_created = models.DateTimeField(default=now)
     active = models.BooleanField(default=True)
     user_type = models.CharField(max_length=50, blank=False, null=False, default='jobseeker')
-    update_history = models.TextField(null=True,blank=True,default='')
+    update_history = models.TextField(null=True, blank=True, default='')
+    global_login_key = models.CharField(max_length=500, null=True, blank=True, default='')
 
     class Meta:
         ordering = ('date_created',)
@@ -39,23 +40,22 @@ class UserProfile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
     user_title = models.CharField(max_length=250, null=True)
-    phone = models.CharField(max_length=20, null=False, blank=False, unique=True)
-    social_facebook = models.URLField(max_length=150, null=True, blank=True, default='https://facebook.com/')
-    social_twitter = models.URLField(max_length=150, null=True, blank=True, default='https://twitter.com/')
-    social_linkedin = models.URLField(max_length=150, null=True, blank=True, default='https://linkedin.com/')
-    social_instagram = models.URLField(max_length=150, null=True, blank=True, default='https://instagram.com/')
-    website = models.URLField(max_length=100, null=True, blank=True, default='https://website.com/')
-    address = models.CharField(max_length=150, null=True, blank=True, unique=False)
-    marital_status = models.CharField(max_length=50, null=False, blank=False)
+    phone = models.CharField(max_length=20, null=True, blank=True, unique=True)
+    social_facebook = models.URLField(max_length=150, null=True, blank=True, default='')
+    social_twitter = models.URLField(max_length=150, null=True, blank=True, default='')
+    social_linkedin = models.URLField(max_length=150, null=True, blank=True, default='')
+    social_instagram = models.URLField(max_length=150, null=True, blank=True, default='')
+    website = models.URLField(max_length=100, null=True, blank=True, default='')
+    address = models.CharField(max_length=150, null=True, blank=True, unique=False, default='')
+    marital_status = models.CharField(max_length=50, null=True, blank=True, default='')
     date_of_birth = models.DateTimeField(default=now)
-    gender = models.CharField(max_length=20, null=False, blank=False, default='Other')
-    languages = models.CharField(max_length=250, null=False, blank=False, default='English')
-    nationality = models.CharField(default='Kenyan', max_length=50, blank=False, null=False)
-    personal_statement = models.TextField(null=True, blank=True)
-    profile_picture = models.CharField(max_length=250, blank=True,null=True,default='')
+    gender = models.CharField(max_length=20, null=True, blank=True, default='Other')
+    languages = models.CharField(max_length=250, null=True, blank=True, default='English')
+    nationality = models.CharField(default='Kenyan', max_length=50, blank=True, null=True)
+    personal_statement = models.TextField(null=True, blank=True, default='')
+    profile_picture = models.CharField(max_length=250, blank=True, null=True, default='')
     date_created = models.DateTimeField(default=now)
-    update_history = models.TextField(null=True,blank=True,default='')
-
+    update_history = models.TextField(null=True, blank=True, default='')
 
     class Meta:
         ordering = ('user_title',)
@@ -71,7 +71,7 @@ class Education(models.Model):
     end_date = models.DateTimeField(default=now)
     current_level = models.BooleanField(default=True)
     description = models.TextField(null=True, blank=True, default='')
-    update_history = models.TextField(null=True,blank=True,default='')
+    update_history = models.TextField(null=True, blank=True, default='')
 
     class Meta:
         ordering = ('user_id',)
@@ -86,7 +86,7 @@ class WorkExperience(models.Model):
     end_date = models.DateTimeField(default=now)
     current_job = models.BooleanField(default=True)
     description = models.TextField(null=True, blank=True, default='')
-    update_history = models.TextField(null=True,blank=True,default='')
+    update_history = models.TextField(null=True, blank=True, default='')
 
     class Meta:
         ordering = ('user_id',)
@@ -100,8 +100,7 @@ class OtherQualifications(models.Model):
     start_date = models.DateTimeField(default=now)
     end_date = models.DateTimeField(default=now)
     description = models.TextField(null=True, blank=True)
-    update_history = models.TextField(null=True,blank=True,default='')
+    update_history = models.TextField(null=True, blank=True, default='')
 
     class Meta:
-        ordering = ('user_id', )
-
+        ordering = ('user_id',)
