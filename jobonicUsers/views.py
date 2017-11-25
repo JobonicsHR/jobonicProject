@@ -3,8 +3,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
-from jobonicUsers.models import User, LoginSession
-from jobonicUsers.serializers import UserSerializer, LoginSessionSerializer
+from jobonicUsers.models import User, LoginSession, UserProfile
+from jobonicUsers.serializers import UserSerializer, LoginSessionSerializer, UserProfileSerializer
 
 from blocks import auth, moments
 from blocks.formatter import pack
@@ -22,8 +22,11 @@ def user_list(request):
         return JsonResponse(pack(serializer.data), safe=False)
 
     elif request.method == 'POST':
+        '''
+        # Linked In Code
         data = JSONParser().parse(request)
 
+        
         user_data = {
             "first_name": data['firstName'],
             "last_name": data['lastName'],
@@ -44,10 +47,24 @@ def user_list(request):
                 'user_title' : data['headline'],
                 'social_linkedin' : data['publicProfileUrl'],
                 'profile_picture' : data['pictureUrl'],
-
+                'country' : data['location']['name']
             }
+
+            new_user_m =
             return JsonResponse(pack(serializer.data, True, "User Updated Successfully"), status=201)
         return JsonResponse(pack (serializer.errors, False, "Error in data receieved"), status=400)
+        '''
+
+        data = JSONParser().parse(request)
+        data['salt'] = auth.generate_str(32)
+        data['password'] = auth.hash_password(data['salt'], data['password'])
+        data['created'] = moments.now()
+        serializer = UserSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
 
 
 @csrf_exempt
