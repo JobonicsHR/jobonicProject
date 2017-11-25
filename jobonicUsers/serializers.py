@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
         'id', 'first_name', 'middle_name', 'last_name', 'email_address', 'user_name', 'salt', 'password', 'date_created',
-        'active', 'update_history')
+        'active', 'update_history', 'linked_in_uid')
 
 
 class LoginSessionSerializer(serializers.ModelSerializer):

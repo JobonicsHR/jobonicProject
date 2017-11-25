@@ -23,14 +23,23 @@ def user_list(request):
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
-        data['salt'] = auth.generate_str(32)
-        data['password'] = auth.hash_password(data['salt'], data['password'])
-        serializer = UserSerializer(data=data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(pack(serializer.data, True, "User Updated Successfully"), status=201)
-        return JsonResponse(pack (serializer.errors, False, "Error in data receieved"), status=400)
+        print (data)
+        user_data = {
+            "first_name" : data['firstName'],
+            "last_name" : data['lastName'],
+            "user_name" : data['id'],
+            "linked_in_uid" : data['id'],
+            "email_address" : data['emailAddress']
+        }
+        return JsonResponse(pack({}), status=200)
+        # data['salt'] = auth.generate_str(32)
+        # data['password'] = auth.hash_password(data['salt'], data['password'])
+        # serializer = UserSerializer(data=data)
+        #
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return JsonResponse(pack(serializer.data, True, "User Updated Successfully"), status=201)
+        # return JsonResponse(pack (serializer.errors, False, "Error in data receieved"), status=400)
 
 
 @csrf_exempt
