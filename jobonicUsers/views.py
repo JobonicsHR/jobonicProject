@@ -22,39 +22,6 @@ def user_list(request):
         return JsonResponse(pack(serializer.data), safe=False)
 
     elif request.method == 'POST':
-        '''
-        # Linked In Code
-        data = JSONParser().parse(request)
-
-        
-        user_data = {
-            "first_name": data['firstName'],
-            "last_name": data['lastName'],
-            "user_name": data['id'],
-            "linked_in_uid": data['id'],
-            "email_address": data['emailAddress'],
-            "password" : data['id']
-        }
-
-        user_data['salt'] = auth.generate_str(32)
-        user_data['password'] = auth.hash_password(user_data['salt'], user_data['password'])
-        serializer = UserSerializer(data=user_data)
-
-        if serializer.is_valid():
-            serializer.save()
-            # save the user profile basic info - country, headline, pictureurl, linked_in url
-            user_profile = {
-                'user_title' : data['headline'],
-                'social_linkedin' : data['publicProfileUrl'],
-                'profile_picture' : data['pictureUrl'],
-                'country' : data['location']['name']
-            }
-
-            new_user_m =
-            return JsonResponse(pack(serializer.data, True, "User Updated Successfully"), status=201)
-        return JsonResponse(pack (serializer.errors, False, "Error in data receieved"), status=400)
-        '''
-
         data = JSONParser().parse(request)
         data['salt'] = auth.generate_str(32)
         data['password'] = auth.hash_password(data['salt'], data['password'])
@@ -65,6 +32,39 @@ def user_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
+@csrf_exempt
+def new_linkedin_user(request):
+    if request.method == 'POST':
+        # Linked In Code
+        data = JSONParser().parse(request)
+        user_data = {
+            "first_name": data['firstName'],
+            "last_name": data['lastName'],
+            "user_name": data['id'],
+            "linked_in_uid": data['id'],
+            "email_address": data['emailAddress'],
+            "password": data['id']
+        }
+
+        user_data['salt'] = auth.generate_str(32)
+        user_data['password'] = auth.hash_password(user_data['salt'], user_data['password'])
+        serializer = UserSerializer(data=user_data)
+
+        if serializer.is_valid():
+            serializer.save()
+            # save the user profile basic info - country, headline, pictureurl, linked_in url
+            user_profile = {
+                'user_title': data['headline'],
+                'social_linkedin': data['publicProfileUrl'],
+                'profile_picture': data['pictureUrl'],
+                'country': data['location']['name'],
+                'user_id' : serializer.data['id']
+            }
+            new_user_serializer = UserProfileSerializer(data=user_profile)
+            return JsonResponse(pack(serializer.data, True, "User Updated Successfully"), status=201)
+        return JsonResponse(pack(serializer.errors, False, "Error in data receieved"), status=400)
 
 
 @csrf_exempt
