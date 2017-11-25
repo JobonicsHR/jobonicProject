@@ -19,7 +19,8 @@ class User(models.Model):
     active = models.BooleanField(default=True)
     user_type = models.CharField(max_length=50, blank=False, null=False, default='jobseeker')
     update_history = models.TextField(null=True, blank=True, default='')
-    global_login_key = models.CharField(max_length=500, null=True, blank=True, default='')
+    # global_login_key = models.CharField(max_length=500, null=True, blank=True, default='')
+    linked_in_uid = models.CharField(max_length=100, null=True, blank=True, default='')
 
     class Meta:
         ordering = ('date_created',)
