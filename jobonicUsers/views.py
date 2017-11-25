@@ -101,7 +101,7 @@ def user_login(request):
         try:
             user = User.objects.get(email_address=data['email_address'])
         except User.DoesNotExist:
-            return JsonResponse(pack({}, False, "Invalid Credentials"), status=404)
+            return JsonResponse(pack({}, False, "Invalid Credentials"), status=200)
 
         stored_pass = user.password
         stored_salt = user.salt
@@ -114,4 +114,4 @@ def user_login(request):
             data['user_type'] = user.user_type
             return JsonResponse(pack(data), safe=False)
         else:
-            return JsonResponse({"msg": "Unsuccessfully"})
+            return JsonResponse(pack({}, False, "Invalid Credentials"), status=404)
