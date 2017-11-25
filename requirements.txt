@@ -8,6 +8,7 @@ gunicorn==19.7.1
 idna==2.5
 passlib==1.7.1
 psycopg2==2.7.1
+python-env==1.0.0
 python-http-client==2.4.0
 pytz==2017.2
 requests==2.18.1

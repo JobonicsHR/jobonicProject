@@ -2,7 +2,13 @@
 import os
 import sys
 
+
+import dotenv
+
+
 if __name__ == "__main__":
+    # Sets DJANGO_SETTINGS_MODULE='settings.dev
+    dotenv.load()
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "jobonics.settings")
     try:
         from django.core.management import execute_from_command_line
