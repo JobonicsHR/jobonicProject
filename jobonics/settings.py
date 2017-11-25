@@ -123,7 +123,7 @@ WSGI_APPLICATION = 'jobonics.wsgi.application'
 #     }
 # }
 
-
+#this is just something
 DATABASES = {
     'default' : {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
