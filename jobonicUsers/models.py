@@ -1,8 +1,6 @@
 import uuid
 
 from django.db import models
-from django.utils.timezone import now
-
 
 # Create your models here.
 
@@ -15,15 +13,14 @@ class User(models.Model):
     email_address = models.CharField(max_length=200, blank=False, default='')
     salt = models.CharField(max_length=200, unique=False, blank=False)
     password = models.CharField(max_length=200, unique=False, blank=False)
-    date_created = models.DateTimeField(default=now)
+    created = models.IntegerField(default=0)
     active = models.BooleanField(default=True)
-    update_history = models.TextField(null=True,blank=True,default='')
+    organisation = models.CharField(max_length=200, blank=True,default='Jobonics')
 
     class Meta:
-        ordering = ('date_created',)
+        ordering = ('created',)
 
-
-class LoginSession(models.Model):
+class LoginSession (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
     session_key = models.CharField(max_length=200, default=uuid.uuid4, editable=False)
@@ -34,73 +31,29 @@ class LoginSession(models.Model):
         ordering = ('created',)
 
 
-class UserProfile(models.Model):
+class UserProfile (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
-    user_title = models.CharField(max_length=250, null=True)
     phone = models.CharField(max_length=20, null=False, blank=False, unique=True)
-    social_facebook = models.URLField(max_length=150, null=True, blank=True, default='https://facebook.com/')
-    social_twitter = models.URLField(max_length=150, null=True, blank=True, default='https://twitter.com/')
-    social_linkedin = models.URLField(max_length=150, null=True, blank=True, default='https://linkedin.com/')
-    social_instagram = models.URLField(max_length=150, null=True, blank=True, default='https://instagram.com/')
-    website = models.URLField(max_length=100, null=True, blank=True, default='https://website.com/')
+    email = models.CharField(max_length=100, null=False, blank=False, unique=True)
     address = models.CharField(max_length=150, null=True, blank=True, unique=False)
     marital_status = models.CharField(max_length=50, null=False, blank=False)
-    date_of_birth = models.DateTimeField(default=now)
-    gender = models.CharField(max_length=20, null=False, blank=False, default='Other')
-    languages = models.CharField(max_length=250, null=False, blank=False, default='English')
+    dob = models.IntegerField(default=0)
     nationality = models.CharField(default='Kenyan', max_length=50, blank=False, null=False)
     personal_statement = models.TextField(null=True, blank=True)
-    profile_picture = models.CharField(max_length=250, blank=True,null=True,default='')
-    date_created = models.DateTimeField(default=now)
-    update_history = models.TextField(null=True,blank=True,default='')
-
+    website = models.URLField(max_length=100, null=True, blank=True)
+    skills = models.TextField()
+    hobbies = models.TextField()
 
     class Meta:
-        ordering = ('user_title',)
+        ordering = ('dob',)
 
-
-class Education(models.Model):
+class Education (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
-    course_name = models.CharField(max_length=250, blank=False, null=False, default='Course Title')
     school = models.CharField(max_length=200, blank=False, null=False)
-    certification = models.CharField(max_length=100, default='Certificate')
-    start_date = models.DateTimeField(default=now)
-    end_date = models.DateTimeField(default=now)
-    current_level = models.BooleanField(default=True)
-    description = models.TextField(null=True, blank=True, default='')
-    update_history = models.TextField(null=True,blank=True,default='')
-
-    class Meta:
-        ordering = ('user_id',)
-
-
-class WorkExperience(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
-    job_title = models.CharField(max_length=250, null=False, blank=False)
-    company = models.CharField(max_length=250, null=False, blank=False)
-    start_date = models.DateTimeField(default=now)
-    end_date = models.DateTimeField(default=now)
-    current_job = models.BooleanField(default=True)
-    description = models.TextField(null=True, blank=True, default='')
-    update_history = models.TextField(null=True,blank=True,default='')
-
-    class Meta:
-        ordering = ('user_id',)
-
-
-class OtherQualifications(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
-    qualification_title = models.CharField(max_length=250, null=False, blank=False)
-    place_acquired = models.CharField(max_length=250, null=False, blank=False)
-    start_date = models.DateTimeField(default=now)
-    end_date = models.DateTimeField(default=now)
-    description = models.TextField(null=True, blank=True)
-    update_history = models.TextField(null=True,blank=True,default='')
+    start = models.CharField(max_length=100)
+    end = models.CharField(max_length=100, default='to date')
 
     class Meta:
         ordering = ('user_id', )
-
