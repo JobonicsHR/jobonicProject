@@ -17,6 +17,7 @@ class User(models.Model):
     password = models.CharField(max_length=200, unique=False, blank=False)
     date_created = models.DateTimeField(default=now)
     active = models.BooleanField(default=True)
+    user_type = models.CharField(max_length=50, blank=False, null=False, default='jobseeker')
     update_history = models.TextField(null=True,blank=True,default='')
 
     class Meta:
