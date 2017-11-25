@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 class LoginSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoginSession
-        fields = ('id', 'user_id', 'session_key', 'created', 'expire', 'update_history')
+        fields = ('id', 'user_id', 'session_key', 'created', 'expire')
 
 
 class UserProfileSerializer(serializers.ModelSerializer):

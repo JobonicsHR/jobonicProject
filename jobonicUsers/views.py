@@ -101,7 +101,7 @@ def user_login(request):
         try:
             user = User.objects.get(email_address=data['email_address'])
         except User.DoesNotExist:
-            return HttpResponse(status=400)
+            return JsonResponse(pack({}, False, "Invalid Credentials"), status=404)
 
         stored_pass = user.password
         stored_salt = user.salt
@@ -110,6 +110,8 @@ def user_login(request):
         if unhash:
             new_session = LoginSession(user_id=user, created=moments.now(), expire=moments.now() + 3600)
             sess = LoginSessionSerializer(new_session)
-            return JsonResponse(sess.data, safe=False)
+            data = sess.data
+            data['user_type'] = user.user_type
+            return JsonResponse(pack(data), safe=False)
         else:
             return JsonResponse({"msg": "Unsuccessfully"})
