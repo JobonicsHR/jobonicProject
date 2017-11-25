@@ -23,23 +23,31 @@ def user_list(request):
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
-        print (data)
+
         user_data = {
-            "first_name" : data['firstName'],
-            "last_name" : data['lastName'],
-            "user_name" : data['id'],
-            "linked_in_uid" : data['id'],
-            "email_address" : data['emailAddress']
+            "first_name": data['firstName'],
+            "last_name": data['lastName'],
+            "user_name": data['id'],
+            "linked_in_uid": data['id'],
+            "email_address": data['emailAddress'],
+            "password" : data['id']
         }
-        return JsonResponse(pack({}), status=200)
-        # data['salt'] = auth.generate_str(32)
-        # data['password'] = auth.hash_password(data['salt'], data['password'])
-        # serializer = UserSerializer(data=data)
-        #
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return JsonResponse(pack(serializer.data, True, "User Updated Successfully"), status=201)
-        # return JsonResponse(pack (serializer.errors, False, "Error in data receieved"), status=400)
+
+        user_data['salt'] = auth.generate_str(32)
+        user_data['password'] = auth.hash_password(user_data['salt'], user_data['password'])
+        serializer = UserSerializer(data=user_data)
+
+        if serializer.is_valid():
+            serializer.save()
+            # save the user profile basic info - country, headline, pictureurl, linked_in url
+            user_profile = {
+                'user_title' : data['headline'],
+                'social_linkedin' : data['publicProfileUrl'],
+                'profile_picture' : data['pictureUrl'],
+
+            }
+            return JsonResponse(pack(serializer.data, True, "User Updated Successfully"), status=201)
+        return JsonResponse(pack (serializer.errors, False, "Error in data receieved"), status=400)
 
 
 @csrf_exempt

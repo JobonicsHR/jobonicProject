@@ -52,7 +52,7 @@ class UserProfile(models.Model):
     date_of_birth = models.DateTimeField(default=now)
     gender = models.CharField(max_length=20, null=True, blank=True, default='Other')
     languages = models.CharField(max_length=250, null=True, blank=True, default='English')
-    nationality = models.CharField(default='Kenyan', max_length=50, blank=True, null=True)
+    country = models.CharField(default='Kenya', max_length=50, blank=True, null=True)
     personal_statement = models.TextField(null=True, blank=True, default='')
     profile_picture = models.CharField(max_length=250, blank=True, null=True, default='')
     date_created = models.DateTimeField(default=now)
