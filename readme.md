@@ -453,3 +453,7 @@ A successful request returns
     "message": "OK"
 }
 ```
+
+## Adding Education
+The structure of Education Model is as follows
+
