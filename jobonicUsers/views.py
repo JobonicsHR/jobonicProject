@@ -112,7 +112,7 @@ def user_details(request, pk):
     try:
         user = User.objects.get(pk=pk)
     except User.DoesNotExist:
-        return HttpResponse(status=400)
+        return JsonResponse(pack({}, False, "User does not exist"))
 
     if request.method == "GET":
         serializer = UserSerializer(user)
@@ -156,8 +156,8 @@ def user_login(request):
 
 @csrf_exempt
 def user_profile(request, pk):
-    users = UserProfile.objects.all()
-    users_serializers = UserProfileSerializer(users, many=True)
+    users = UserProfile.objects.get(user_id=pk)
+    users_serializers = UserProfileSerializer(users)
     return JsonResponse(pack(users_serializers.data))
     # try:
     #     user = UserProfile.objects.get(user_id=pk)
