@@ -1,1 +1,1 @@
-web: gunicorn jobonics.wsgi
+web: gunicorn jobonics.wsgi --log-file -
