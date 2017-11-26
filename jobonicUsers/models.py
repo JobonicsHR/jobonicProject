@@ -12,7 +12,7 @@ class User(models.Model):
     middle_name = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200, blank=False, unique=False)
     user_name = models.CharField(max_length=200, unique=False, blank=True, null=True, default='')
-    email_address = models.CharField(max_length=200, blank=False, default='')
+    email_address = models.CharField(max_length=200, blank=False, default='', unique=True)
     salt = models.CharField(max_length=200, unique=False, blank=False)
     password = models.CharField(max_length=200, unique=False, blank=True, null=True, default='')
     date_created = models.DateTimeField(default=now)

@@ -30,8 +30,8 @@ def user_list(request):
 
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+            return JsonResponse(pack(serializer.data), status=201)
+        return JsonResponse(pack(serializer.errors, False, "Unable to save the User"), status=200)
 
 
 @csrf_exempt
@@ -45,7 +45,7 @@ def new_linkedin_user(request):
             "user_name": data['id'],
             "linked_in_uid": data['id'],
             "email_address": data['emailAddress'],
-            "password": data['id']
+            "password": data['id'],
         }
 
         user_data['salt'] = auth.generate_str(32)
@@ -60,11 +60,48 @@ def new_linkedin_user(request):
                 'social_linkedin': data['publicProfileUrl'],
                 'profile_picture': data['pictureUrl'],
                 'country': data['location']['name'],
-                'user_id' : serializer.data['id']
+                'user_id': serializer.data['id']
             }
             new_user_serializer = UserProfileSerializer(data=user_profile)
-            return JsonResponse(pack(serializer.data, True, "User Updated Successfully"), status=201)
-        return JsonResponse(pack(serializer.errors, False, "Error in data receieved"), status=400)
+            if new_user_serializer.is_valid():
+                new_user_serializer.save()
+                return JsonResponse(pack(serializer.data, True, "User Updated Successfully"), status=201)
+            else:
+                return JsonResponse(pack(new_user_serializer.errors, False, "Unable to save User"))
+        else:
+            return JsonResponse(pack(serializer.errors, False, "Error in data receieved"), status=400)
+
+
+@csrf_exempt
+def login_with_linkedin(request):
+    """
+    Login user with Linked In
+    :param request:
+    :return:
+    """
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+
+        email_address = data['emailAddress']
+        password = data['id']
+
+        try:
+            user = User.objects.get(email_address=email_address)
+            stored_pass = user.password
+            stored_salt = user.salt
+            unhash = auth.unhash_password(stored_salt, password, stored_pass)
+            if unhash:
+                new_session = LoginSession(user_id=user, created=moments.now(), expire=moments.now() + 3600)
+                sess = LoginSessionSerializer(new_session)
+                data = sess.data
+                data['user_type'] = user.user_type
+                return JsonResponse(pack(data), safe=False)
+            else:
+                return JsonResponse(pack({}, False, "Invalid Credentials"), status=404)
+
+
+        except User.DoesNotExist:
+            return JsonResponse(pack({}, False, "Account does not exist"))
 
 
 @csrf_exempt
@@ -79,19 +116,19 @@ def user_details(request, pk):
 
     if request.method == "GET":
         serializer = UserSerializer(user)
-        return JsonResponse(serializer.data)
+        return JsonResponse(pack(serializer.data), status=201)
 
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         serializer = UserSerializer(user, data=data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+            return JsonResponse(pack(serializer.data), True, "Update successful")
+        return JsonResponse(pack(serializer.errors, False, "Unable to update user"), status=400)
 
     elif request.method == 'DELETE':
         user.delete()
-        return HttpResponse(status=204)
+        return JsonResponse(pack({}, True, "Delete Successful"))
 
 
 @csrf_exempt
@@ -114,4 +151,20 @@ def user_login(request):
             data['user_type'] = user.user_type
             return JsonResponse(pack(data), safe=False)
         else:
-            return JsonResponse(pack({}, False, "Invalid Credentials"), status=404)
+            return JsonResponse(pack({}, False, "Invalid Credentials"), status=200)
+
+
+@csrf_exempt
+def user_profile(request, pk):
+    users = UserProfile.objects.all()
+    users_serializers = UserProfileSerializer(users, many=True)
+    return JsonResponse(pack(users_serializers.data))
+    # try:
+    #     user = UserProfile.objects.get(user_id=pk)
+    #     # user = user.select_related("id")
+    # except UserProfile.DoesNotExist:
+    #     return JsonResponse(pack({}, False, "User does not exist"))
+    #
+    # if request.method =='GET':
+    #     profile = UserProfileSerializer(user)
+    #     return JsonResponse(pack(profile.data), True, "OK")
