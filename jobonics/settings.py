@@ -97,41 +97,18 @@ WSGI_APPLICATION = 'jobonics.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-# DATABASES = {
-#     'default': "postgres://nsiukaoqybsjna:6e9755b3a6dfe9c0aed06de8f41bc7aad7d73c4a964d67b550c4882d2ea8da93@ec2-23-21-246-11.compute-1.amazonaws.com:5432/d4ofkj940dt9nu"
-# }
-#
-# DATABASES = {
-#     'default' : {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': dotenv.get('DB_NAME'),
-#         'USER': dotenv.get('DB_USER'),
-#         'PASSWORD': dotenv.get('DB_PASSWORD'),
-#         'HOST': dotenv.get('DB_HOST'),
-#         'PORT': dotenv.get('DB_PORT'),
-#     }
-# }
 
-# DATABASES = {
-#     'default' : {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'd4ofkj940dt9nu',
-#         'USER': 'nsiukaoqybsjna',
-#         'PASSWORD': '6e9755b3a6dfe9c0aed06de8f41bc7aad7d73c4a964d67b550c4882d2ea8da93',
-#         'HOST': 'ec2-23-21-246-11.compute-1.amazonaws.com',
-#         'PORT': '5432',
-#     }
-# }
+
 
 
 DATABASES = {
     'default' : {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd4ofkj940dt9nu',
-        'USER': 'nsiukaoqybsjna',
-        'PASSWORD': '6e9755b3a6dfe9c0aed06de8f41bc7aad7d73c4a964d67b550c4882d2ea8da93',
-        'HOST': 'ec2-23-21-246-11.compute-1.amazonaws.com',
-        'PORT': '5432',
+        'NAME': os.environ.get('DB_NAME', 'd4ofkj940dt9nu'),
+        'USER': os.environ.get('DB_USER','nsiukaoqybsjna'),
+        'PASSWORD': os.environ.get('DB_PASSWORD','6e9755b3a6dfe9c0aed06de8f41bc7aad7d73c4a964d67b550c4882d2ea8da93'),
+        'HOST': os.environ.get('DB_HOST', 'ec2-23-21-246-11.compute-1.amazonaws.com'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
