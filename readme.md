@@ -312,9 +312,51 @@ Unsuccessful response
 }
 ```
 
-## update a user
+## Update a user
 Send a PUT request to */users/id/* with a JSON payload with the details you want to update eg
-*/users/4abca1c5-812c-44ca-a83f-79553e394cd9/
+*/users/4abca1c5-812c-44ca-a83f-79553e394cd9/. Make sure to send the whole user details in a json object because it replaces the fields given
+
+Sample payload
+```json
+{
+"id": "20d86a3e-2b7e-4707-b8e3-e925ec525333",
+        "first_name": "Samson",
+        "middle_name": "Chitechi",
+        "last_name": "Rapando",
+        "email_address": "samsonrapando@gmail.com",
+        "user_name": "wp7uunLW0B",
+        "salt": "OUXlLnislToqJSnIKjmTSbqmrHctlRxn",
+        "password": "$pbkdf2-sha256$200000$pTRmjDGm1BojRIix1jpHCIFwznmvVYrRmpMy5hzjPGc$XpHaUZQkw/cJhyrbVjFSbskF8M0qVMZV40T/4Q./XMo",
+        "date_created": "2017-11-26T11:24:08.988282Z",
+        "active": true,
+        "update_history": "",
+        "linked_in_uid": "wp7uunLW0B",
+        "user_type": "jobseeker"
+}
+```
+
+Sample response
+```json
+{
+    "data": {
+        "id": "20d86a3e-2b7e-4707-b8e3-e925ec525333",
+        "first_name": "Samson",
+        "middle_name": "Chitechi",
+        "last_name": "Rapando",
+        "email_address": "samsonrapando@gmail.com",
+        "user_name": "wp7uunLW0B",
+        "salt": "OUXlLnislToqJSnIKjmTSbqmrHctlRxn",
+        "password": "$pbkdf2-sha256$200000$pTRmjDGm1BojRIix1jpHCIFwznmvVYrRmpMy5hzjPGc$XpHaUZQkw/cJhyrbVjFSbskF8M0qVMZV40T/4Q./XMo",
+        "date_created": "2017-11-26T11:24:08.988282Z",
+        "active": true,
+        "update_history": "",
+        "linked_in_uid": "wp7uunLW0B",
+        "user_type": "jobseeker"
+    },
+    "success": true,
+    "message": "Update successful"
+}
+```
 
 
 ---
@@ -324,4 +366,90 @@ Send a PUT request to */users/id/* with a JSON payload with the details you want
 Send a GET request to */users/profile/profile-id*
 Example
 
+A get request to */users/profile/20d86a3e-2b7e-4707-b8e3-e925ec525333/*
 
+Response:
+```json
+{
+    "data": {
+        "id": "3873b917-903c-4663-b528-abacbac576d2",
+        "user_id": "20d86a3e-2b7e-4707-b8e3-e925ec525333",
+        "user_title": "Intern Software Developer at USAID Health IT Project at University of Nairobi",
+        "phone": null,
+        "social_facebook": "",
+        "social_twitter": "",
+        "social_linkedin": "https://www.linkedin.com/in/samson-rapando-5a273486",
+        "social_instagram": "",
+        "website": "",
+        "address": "",
+        "marital_status": "",
+        "date_of_birth": "2017-11-26T11:24:09.146699Z",
+        "gender": "Other",
+        "languages": "English",
+        "country": "Kenya",
+        "personal_statement": "",
+        "profile_picture": "https://media.licdn.com/mpr/mprx/0_1J2xFl_b9WcySruWzjZAiPEbPVn7ah8eJJNAGXgbt7UawrAWMJZOE5dQvUy7wl_eKfZxdl66xxomHXnq0Ed_f5woVxofHXveJEdyXkYFAY0_G-mqvRx-krK9sor0TXGMKdSP_sf9Azo",
+        "date_created": "2017-11-26T11:24:09.146699Z",
+        "update_history": ""
+    },
+    "success": true,
+    "message": "OK"
+}
+```
+
+## Updating a User Profile
+Send a PUT request to the same URL as above. Remember to include all the fields in the response above as payload. This is because a ```PUT``` request replaces all fields in the model.
+
+Sample payload:
+```json
+{
+	"id": "3873b917-903c-4663-b528-abacbac576d2",
+        "user_id": "20d86a3e-2b7e-4707-b8e3-e925ec525333",
+        "user_title": "Intern Software Developer at USAID Health IT Project at University of Nairobi",
+        "phone": "+254720735121",
+        "social_facebook": "https://facebook.com/samy.raps",
+        "social_twitter": "https://twitter.com/samy_raps",
+        "social_linkedin": "https://www.linkedin.com/in/samson-rapando-5a273486",
+        "social_instagram": "https://instagram.com/samy_raps",
+        "website": "https://jobonics.com",
+        "address": "1355-00518 Nairobi Kenya",
+        "marital_status": "Single",
+        "date_of_birth": "2017-11-26T11:24:09.146699Z",
+        "gender": "Other",
+        "languages": "English",
+        "country": "Kenya",
+        "personal_statement": "",
+        "profile_picture": "https://media.licdn.com/mpr/mprx/0_1J2xFl_b9WcySruWzjZAiPEbPVn7ah8eJJNAGXgbt7UawrAWMJZOE5dQvUy7wl_eKfZxdl66xxomHXnq0Ed_f5woVxofHXveJEdyXkYFAY0_G-mqvRx-krK9sor0TXGMKdSP_sf9Azo",
+        "date_created": "2017-11-26T11:24:09.146699Z",
+        "update_history": ""
+}
+
+```
+A successful request returns 
+```json
+{
+    "data": {
+        "id": "3873b917-903c-4663-b528-abacbac576d2",
+        "user_id": "20d86a3e-2b7e-4707-b8e3-e925ec525333",
+        "user_title": "Intern Software Developer at USAID Health IT Project at University of Nairobi",
+        "phone": "+254720735121",
+        "social_facebook": "https://facebook.com/samy.raps",
+        "social_twitter": "https://twitter.com/samy_raps",
+        "social_linkedin": "https://www.linkedin.com/in/samson-rapando-5a273486",
+        "social_instagram": "https://instagram.com/samy_raps",
+        "website": "https://jobonics.com",
+        "address": "1355-00518 Nairobi Kenya",
+        "marital_status": "Single",
+        "date_of_birth": "2017-11-26T11:24:09.146699Z",
+        "gender": "Other",
+        "languages": "English",
+        "country": "Kenya",
+        "personal_statement": "",
+        "profile_picture": "https://media.licdn.com/mpr/mprx/0_1J2xFl_b9WcySruWzjZAiPEbPVn7ah8eJJNAGXgbt7UawrAWMJZOE5dQvUy7wl_eKfZxdl66xxomHXnq0Ed_f5woVxofHXveJEdyXkYFAY0_G-mqvRx-krK9sor0TXGMKdSP_sf9Azo",
+        "date_created": "2017-11-26T11:24:09.146699Z",
+        "update_history": ""
+    },
+    "success": true,
+    "message": "OK"
+}
+```

@@ -35,6 +35,34 @@ def user_list(request):
 
 
 @csrf_exempt
+def user_details(request, pk):
+    """
+    Retrieve, Update and Delete
+    """
+    try:
+        user = User.objects.get(pk=pk)
+    except User.DoesNotExist:
+        return JsonResponse(pack({}, False, "User does not exist"))
+
+    if request.method == "GET":
+        serializer = UserSerializer(user)
+        return JsonResponse(pack(serializer.data), status=201)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = UserSerializer(user, data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(pack(serializer.data, True, "Update successful"), status=201)
+        return JsonResponse(pack(serializer.errors, False, "Unable to update user"), status=400)
+
+    elif request.method == 'DELETE':
+        user.delete()
+        return JsonResponse(pack({}, True, "Delete Successful"))
+
+
+@csrf_exempt
 def new_linkedin_user(request):
     if request.method == 'POST':
         # Linked In Code
@@ -105,33 +133,6 @@ def login_with_linkedin(request):
 
 
 @csrf_exempt
-def user_details(request, pk):
-    """
-    Retrieve, Update and Delete
-    """
-    try:
-        user = User.objects.get(pk=pk)
-    except User.DoesNotExist:
-        return JsonResponse(pack({}, False, "User does not exist"))
-
-    if request.method == "GET":
-        serializer = UserSerializer(user)
-        return JsonResponse(pack(serializer.data), status=201)
-
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = UserSerializer(user, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(pack(serializer.data), True, "Update successful")
-        return JsonResponse(pack(serializer.errors, False, "Unable to update user"), status=400)
-
-    elif request.method == 'DELETE':
-        user.delete()
-        return JsonResponse(pack({}, True, "Delete Successful"))
-
-
-@csrf_exempt
 def user_login(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
@@ -156,9 +157,22 @@ def user_login(request):
 
 @csrf_exempt
 def user_profile(request, pk):
-    users = UserProfile.objects.get(user_id=pk)
-    users_serializers = UserProfileSerializer(users)
-    return JsonResponse(pack(users_serializers.data))
+    try:
+        user = UserProfile.objects.get(user_id=pk)
+    except UserProfile.DoesNotExist:
+        return JsonResponse(pack({}, False, "User Profile does not exist"))
+
+    if request.method == 'GET':
+        user_serializers = UserProfileSerializer(user)
+        return JsonResponse(pack(user_serializers.data))
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        user_serializer = UserProfileSerializer(user, data=data)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return JsonResponse(pack(user_serializer.data), status=201)
+        return JsonResponse(pack(user_serializer.errors, False, "Unable to edit user"), status=200)
     # try:
     #     user = UserProfile.objects.get(user_id=pk)
     #     # user = user.select_related("id")
